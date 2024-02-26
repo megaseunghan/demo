@@ -2,7 +2,10 @@ name: Notify PR Review
 
 on:
   pull_request:
-    types: [review_requested]
+    branches: [main, dev]
+    types: [review_requested, closed]
+  issues: 
+    types: [opened]
     
 jobs:
   notify:
