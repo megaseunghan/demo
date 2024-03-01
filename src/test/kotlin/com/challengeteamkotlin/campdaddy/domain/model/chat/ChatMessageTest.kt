@@ -2,7 +2,7 @@ package com.challengeteamkotlin.campdaddy.domain.model.chat
 
 import com.challengeteamkotlin.campdaddy.fixture.chat.ChatRoomFixture.chatRoom
 import com.challengeteamkotlin.campdaddy.fixture.member.MemberFixture.buyer
-import io.kotest.assertions.throwables.shouldNotThrowgit
+import io.kotest.assertions.throwables.shouldNotThrow
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
