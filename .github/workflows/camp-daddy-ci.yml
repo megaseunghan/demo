@@ -4,14 +4,13 @@ on:
   pull_request:
     branches: [ main, dev ]
 
-defaults:
-  run:
-    working-directory: camp-daddy
 
 jobs:
   test:
     name: 우분투 설치
     runs-on: ubuntu-latest
+    env:
+      working-directory: camp-daddy
 
     permissions:
       contents: read
