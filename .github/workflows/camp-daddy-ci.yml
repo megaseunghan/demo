@@ -41,6 +41,8 @@ jobs:
       - name: 테스트 결과 PR 등록
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: ${{ always() }}
+        with:
+          files: '**/build/test-results/test/TEST-*.xml'
 
       - name: 슬랙 Alarm 전송
         uses: 8398a7/action-slack@v3
