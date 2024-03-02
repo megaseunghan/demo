@@ -6,7 +6,7 @@ on:
 
 defaults:
   run:
-    working-directory: camp-daddy
+    working-directory: ./camp-daddy
 
 jobs:
   test:
@@ -23,7 +23,7 @@ jobs:
 
       - name: .env 생성
         run: echo "${{ secrets.ENV }}" > .env
-        working-directory: camp-daddy/src/main/resources
+        working-directory: ./camp-daddy/src/main/resources
 
       - name: JDK 17 설치
         uses: actions/setup-java@v3
