@@ -9,8 +9,6 @@ jobs:
   test:
     name: 우분투 설치
     runs-on: ubuntu-latest
-    env:
-      working-directory: camp-daddy
 
     permissions:
       contents: read
@@ -23,6 +21,8 @@ jobs:
       - name: .env 생성
         run: |
           jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
+          pwd
+          ls -al
         env:
           SECRETS_CONTEXT: ${{ toJson(secrets) }}
         working-directory: camp-daddy/src/main/resources
