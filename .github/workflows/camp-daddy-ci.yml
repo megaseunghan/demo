@@ -25,6 +25,7 @@ jobs:
           ls -al
         env:
           SECRETS_CONTEXT: ${{ toJson(secrets) }}
+        working-directory: src/main/resources
 
 
       - name: JDK 17 설치
