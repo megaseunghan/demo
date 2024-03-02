@@ -18,11 +18,9 @@ jobs:
       - name: 레포지토리 체크아웃
         uses: actions/checkout@v2
 
-      - name: .env 생성
+      - name: .env 파일 생성
         run: |
           jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
-          pwd
-          ls -al
         env:
           SECRETS_CONTEXT: ${{ toJson(secrets) }}
 
@@ -37,14 +35,18 @@ jobs:
         run: chmod +x gradlew
 
       - name: Gradle 빌드 & 테스트 실행
-        run: ./gradlew build test -i
+        run: ./gradlew build test
+
+      - name: 테스트 결과 PR 등록
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: ${{ always() }}
 
       - name: 슬랙 Alarm 전송
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
           author_name: CI 결과 알림
-          fields: message, commit, author, ref, workflow
+          fields: message, commit, author, ref, workflow, took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: always()
