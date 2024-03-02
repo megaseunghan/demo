@@ -25,7 +25,6 @@ jobs:
           ls -al
         env:
           SECRETS_CONTEXT: ${{ toJson(secrets) }}
-        working-directory: camp-daddy/src/main/resources
 
 
       - name: JDK 17 설치
