@@ -30,7 +30,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Gradle 빌드 & 테스트 실행
-        run: ./gradlew build test
+        run: ./gradlew build test -i
 
       - name: 슬랙 Alarm 전송
         uses: 8398a7/action-slack@v3
