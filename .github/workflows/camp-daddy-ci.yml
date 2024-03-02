@@ -4,6 +4,10 @@ on:
   pull_request:
     branches: [ main, dev ]
 
+defaults:
+  run:
+    working-directory: camp-daddy
+
 jobs:
   test:
     name: 우분투 설치
@@ -14,8 +18,8 @@ jobs:
 
     steps:
       - name: .env 생성
-        run: |
-          echo "${{ secrets.ENV }}" > .env
+        run: echo "${{ secrets.ENV }}" > .env
+        working-directory: camp-daddy/src/main/resources
 
       - name: 레포지토리 체크아웃
         uses: actions/checkout@v2
