@@ -4,10 +4,6 @@ on:
   pull_request:
     branches: [ main, dev ]
 
-defaults:
-  run:
-    working-directory: ./camp-daddy
-
 jobs:
   test:
     name: 우분투 설치
@@ -22,8 +18,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: .env 생성
-        run: echo "${{ secrets.ENV }}" > .env
-        working-directory: ./camp-daddy/src/main/resources
+        run: |
+          touch .env
+          echo ${{ secrets.ENV }} | sed 's/./& /g'
+          echo ${{ secrets.ENV }} > .env
 
       - name: JDK 17 설치
         uses: actions/setup-java@v3
