@@ -59,6 +59,7 @@ jobs:
           port: ${{ secrets.AWS_SSH_PORT }}
           envs: GITHUB_SHA
           script: |
+            sudo apt update
             sudo docker ps
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/docker-camp-daddy
             sudo docker run -d -p 8082:8082 ${{ secrets.DOCKER_USERNAME }}/docker-camp-daddy
