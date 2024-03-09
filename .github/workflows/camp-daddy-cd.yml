@@ -15,11 +15,28 @@ jobs:
       - name: 레포지토리 체크아웃
         uses: actions/checkout@v2
 
+      - name: .env 파일 생성
+        run: |
+          jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
+        env:
+          SECRETS_CONTEXT: ${{ toJson(secrets) }}
+
+      - name: Gradle 캐싱
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: JDK 17 설치
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'corretto'
+
 
       - name: Gradle 권한 부여
         run: chmod +x gradlew
@@ -27,15 +44,22 @@ jobs:
       - name: Gradle 빌드 & 테스트 실행
         run: ./gradlew build test
 
-      - name: EC2 인스턴스에 jar 파일 복사
-      - name: jar 파일 배포
+      - name: Docker 빌드 & 푸쉬
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -f Dockerfile-dev -t ${{ secrets.DOCKER_USERNAME }}/docker-camp-daddy .
+          docker push ${{ secrets.DOCKER_USERNAME }}/docker-camp-daddy
 
-      - name: 슬랙 Alarm 전송
-        uses: 8398a7/action-slack@v3
+      - name: EC2 배포
+        uses: appleboy/ssh-action@master
         with:
-          status: ${{ job.status }}
-          author_name: CD 결과 알림
-          fields: message, commit, author, ref, workflow
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
+          host: ${{ secrets.AWS_HOST }} # EC2 퍼블릭 IPv4 DNS
+          username: ubuntu
+          key: ${{ secrets.AWS_SSH_KEY }}
+          port: ${{ secrets.AWS_SSH_PORT }}
+          envs: GITHUB_SHA
+          script: |
+            sudo docker ps
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/docker-camp-daddy
+            sudo docker run -d -p 8082:8082 ${{ secrets.DOCKER_USERNAME }}/docker-camp-daddy
+            sudo docker image prune -f
