@@ -56,7 +56,6 @@ jobs:
           host: ${{ secrets.AWS_HOST }} # EC2 퍼블릭 IPv4 DNS
           username: ubuntu
           key: ${{ secrets.AWS_SSH_KEY }}
-          port: ${{ secrets.AWS_SSH_PORT }}
           script: |
             sudo apt update
             sudo docker ps
