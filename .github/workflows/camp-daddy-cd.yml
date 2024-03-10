@@ -57,8 +57,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.AWS_SSH_KEY }}
           script: |
-            whoami
-#            sudo docker ps
-#            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/docker-camp-daddy
-#            sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/docker-camp-daddy
-#            sudo docker image prune -f
+            sudo docker ps
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/docker-camp-daddy
+            sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/docker-camp-daddy
+            sudo docker image prune -f
