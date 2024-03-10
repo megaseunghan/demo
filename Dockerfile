@@ -1,4 +1,4 @@
-FROM openjdk:17
+FROM ubuntu:22.04
 
 ARG JAR_FILE=*.jar
 COPY /build/libs/$JAR_FILE mussangdeul.jar
