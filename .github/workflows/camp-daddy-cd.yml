@@ -56,7 +56,7 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: $ {{ secrets.AWS_USERNAME }}
           key: ${{ secrets.AWS_SSH_KEY }}
-          env: GITHUB_SHA
+          envs: GITHUB_SHA
           script: |
             sudo docker ps
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/docker-camp-daddy
